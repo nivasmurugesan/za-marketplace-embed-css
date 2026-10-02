@@ -1,0 +1,33 @@
+/* ---------------------------------------------------------------------------
+   Zoho Analytics - Marketplace embed overrides
+   Loaded by the embed via its customCss query param.
+   Hides Marketplace's filter row (All Categories / Edition / Price / Rating /
+   Deployment type) inside the Analytics chart chooser, and closes the gap the
+   now-absent row leaves behind.
+   --------------------------------------------------------------------------- */
+
+/* The whole filter row. #searchComponent is a SIBLING of this inside
+   #filter-bar, so search is untouched. */
+#extnFilterCompn {
+    display: none !important;
+}
+
+/* #filter-bar is position:fixed and padded for a two-line filter row; without
+   the filters it only holds the search icon. */
+#filter-bar {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 0 !important;
+}
+
+/* The embed's own JS writes margin-top:85px inline on the tag cloud to clear
+   the fixed filter bar, so these need !important to win. */
+#mp-tags-cloud,
+.non-feature .featuredApps {
+    margin-top: 44px !important;
+}
+
+#extension-listed,
+.non-feature-ui #extension-listed {
+    margin-top: 12px !important;
+}
