@@ -20,6 +20,13 @@
     display: none !important;
 }
 
+/* Outer page wrapper. The padding is set inline in the markup
+   (style="...padding:7.5px 20px 20px 20px"), so overriding it needs !important.
+   No end padding, so the card grid can run to the edge of the panel. */
+.lightGreyBg.box-borderBx {
+    padding: 20px 0px 20px 20px !important;
+}
+
 /* The card grid is pushed down to clear the fixed filter bar - .mT30 in the
    markup, plus a margin-top the embed's own JS writes inline. With nothing
    above it any more, pull it back to the top. */
