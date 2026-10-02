@@ -1,33 +1,29 @@
 /* ---------------------------------------------------------------------------
    Zoho Analytics - Marketplace embed overrides
    Loaded by the embed via its customCss query param.
-   Hides Marketplace's filter row (All Categories / Edition / Price / Rating /
-   Deployment type) inside the Analytics chart chooser, and closes the gap the
-   now-absent row leaves behind.
+
+   Strips Marketplace's own browse chrome inside the Analytics chart chooser so
+   only the app cards remain.
    --------------------------------------------------------------------------- */
 
-/* The whole filter row. #searchComponent is a SIBLING of this inside
-   #filter-bar, so search is untouched. */
-#extnFilterCompn {
+/* The whole filter bar: the filter row (#extnFilterCompn - All Categories /
+   Edition / Price / Rating / Deployment type) and the search box
+   (#searchComponent) are both children of this, so one rule covers both.
+   It is position:fixed and padded to reserve space, which is why hiding the
+   children alone would leave a gap. */
+#filter-bar {
     display: none !important;
 }
 
-/* #filter-bar is position:fixed and padded for a two-line filter row; without
-   the filters it only holds the search icon. */
-#filter-bar {
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
-    margin-bottom: 0 !important;
+/* "Most used Tags" cloud. */
+#mp-tags-cloud {
+    display: none !important;
 }
 
-/* The embed's own JS writes margin-top:85px inline on the tag cloud to clear
-   the fixed filter bar, so these need !important to win. */
-#mp-tags-cloud,
-.non-feature .featuredApps {
-    margin-top: 44px !important;
-}
-
+/* The card grid is pushed down to clear the fixed filter bar - .mT30 in the
+   markup, plus a margin-top the embed's own JS writes inline. With nothing
+   above it any more, pull it back to the top. */
 #extension-listed,
 .non-feature-ui #extension-listed {
-    margin-top: 12px !important;
+    margin-top: 0 !important;
 }
