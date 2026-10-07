@@ -12,7 +12,7 @@
    It is position:fixed and padded to reserve space, which is why hiding the
    children alone would leave a gap. */
 #filter-bar {
-    display: none !important;
+   
 }
 
 /* "Most used Tags" cloud. */
