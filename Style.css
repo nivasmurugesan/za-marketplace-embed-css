@@ -2,35 +2,216 @@
    Zoho Analytics - Marketplace embed overrides
    Loaded by the embed via its customCss query param.
 
-   Strips Marketplace's own browse chrome inside the Analytics chart chooser so
-   only the app cards remain.
+   Strips Marketplace's own browse chrome inside the Analytics chart chooser and
+   relays the app cards as a two-column grid that fits the panel.
    --------------------------------------------------------------------------- */
 
-/* The whole filter bar: the filter row (#extnFilterCompn - All Categories /
-   Edition / Price / Rating / Deployment type) and the search box
-   (#searchComponent) are both children of this, so one rule covers both.
-   It is position:fixed and padded to reserve space, which is why hiding the
-   children alone would leave a gap. */
-#filter-bar {
-   
-}
+/* ---- Browse chrome ------------------------------------------------------ */
 
-/* "Most used Tags" cloud. */
-#mp-tags-cloud {
+/* Everything above the card grid. They are all siblings of #extension-listed,
+   so none of this hides the cards themselves.
+
+   #filter-bar          the filter row (#extnFilterCompn - All Categories /
+                        Edition / Price / Rating / Deployment type) and the
+                        search box (#searchComponent). Both are children of it,
+                        so one rule covers both; it is position:fixed and padded
+                        to reserve space, which is why hiding the children alone
+                        would leave a gap.
+   #featured            "Featured apps" banner.
+   .editors-pick        "Editor's pick".
+   #mp-tags-cloud       "Most used Tags".
+   #view-more-extension the paging link under the grid.
+
+   #promotion-service-apps is not on the Analytics embed today; it is listed so
+   a promo that does render cannot push the grid down. */
+#filter-bar,
+#featured,
+.editors-pick,
+#mp-tags-cloud,
+#promotion-service-apps,
+#view-more-extension {
     display: none !important;
 }
 
-/* Outer page wrapper. The padding is set inline in the markup
-   (style="...padding:7.5px 20px 20px 20px"), so overriding it needs !important.
-   No end padding, so the card grid can run to the edge of the panel. */
+/* ---- Page wrapper ------------------------------------------------------- */
+
+/* The embed gives this a fixed pixel height, which the card grid outgrows: the
+   grid then overflows the wrapper and the wrapper's bottom padding ends up
+   somewhere in the middle of the list instead of below the last card. Height by
+   content, floored at the viewport so a short list still fills the panel.
+
+   Padding is set inline in the markup (style="...padding:7.5px 20px 20px 20px"),
+   hence !important. */
 .lightGreyBg.box-borderBx {
-    padding: 20px 0px 20px 20px !important;
+    height: auto !important;
+    min-height: 100%;
+    box-sizing: border-box;
+    padding: 16px 20px 20px 20px !important;
 }
 
-/* The card grid is pushed down to clear the fixed filter bar - .mT30 in the
-   markup, plus a margin-top the embed's own JS writes inline. With nothing
+/* ---- Card grid ---------------------------------------------------------- */
+
+/* Two columns rather than the embed's inline-block flow. The cards are fixed at
+   320px wide (.w320) with their own right/bottom margins, which in a panel this
+   narrow leaves one column and a wide gutter. The grid owns the spacing now, so
+   the per-card margins come off below.
+
+   margin-top: the grid is pushed down to clear the fixed filter bar (.mT30 in
+   the markup, plus a margin-top the embed's own JS writes inline). With nothing
    above it any more, pull it back to the top. */
 #extension-listed,
 .non-feature-ui #extension-listed {
     margin-top: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 12px;
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 0;
+    padding-bottom: 0;
+}
+
+#extension-listed .default-card-wrapper {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+}
+
+/* Keeps the hidden attribute working: the rule above would otherwise win over
+   the browser's own [hidden] { display: none }, since it carries !important. */
+#extension-listed .default-card-wrapper[hidden] {
+    display: none !important;
+}
+
+/* ---- Card ---------------------------------------------------------------- */
+
+/* The embed's cards are square-cornered and flat. Rounded with a resting shadow
+   that lifts on hover, to match the cards in the rest of the chooser. */
+#extension-listed .default-card-wrapper {
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 160ms ease;
+}
+
+#extension-listed .default-card-wrapper:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+    /* Above its neighbours, so the lifted shadow is not clipped by the next card. */
+    z-index: 2;
+}
+
+/* Banner. The embed stretches it to the full 150px box (object-fit: fill), which
+   distorts the wordmark logos most visuals ship. Contain it on a tinted plate
+   instead, and drop the border the embed sets on both the box and the image - at
+   this width the doubled line is visible. */
+#extension-listed .default-card-wrapper .h150 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f9fc;
+    overflow: hidden;
+}
+
+#extension-listed .default-card-wrapper .h150 img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: 0 !important;
+}
+
+/* ---- Card hover panel ---------------------------------------------------- */
+
+/* .secondComp is the detail panel the embed cross-fades in over the card. Its
+   own layout is flow, which at this card width leaves the price stranded under a
+   short description. Column flex so the price can sit on the bottom edge.
+   Marketplace owns the fade (.op0 plus its own :hover rule); none of this
+   touches it. */
+#extension-listed .secondComp {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+    /* .p20 in the markup; 16px to match the rest of the chooser's cards. */
+    padding: 16px !important;
+}
+
+#extension-listed .secondComp .semibold {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #222;
+}
+
+/* The embed pins this to 110px and hard-clips it, so a long description is cut
+   mid-line. Size it to its content and clamp instead, for an ellipsis. */
+#extension-listed .secondComp .extn-description {
+    height: auto !important;
+    margin-top: 8px;
+    opacity: 1;
+    line-height: 18px;
+    color: #222;
+}
+
+#extension-listed .secondComp .extn-desc-line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Price, to the bottom-right corner. margin-top:auto takes up whatever the
+   description left over, so it lands on the bottom edge whatever the length. */
+#extension-listed .secondComp .color3 {
+    margin-top: auto !important;
+    align-self: flex-end;
+    width: auto !important;
+}
+
+/* ---- Loading state ------------------------------------------------------ */
+
+/* The embed ships #extension-listed empty and fills it from an XHR: measured on
+   marketplace.zoho.com, the page is painted and idle from ~0.6s but the cards
+   only land at ~1.35s. Hiding the chrome above turned that window into a blank
+   grey panel - previously the filter bar and the featured/editor's-pick blocks
+   covered it.
+   Two card-shaped placeholders in the cells the first row will occupy. :empty
+   is the whole mechanism: the embed's own script replaces the children, the
+   selector stops matching and these disappear - no hook into Marketplace's JS
+   and nothing to keep in sync. The empty element also has no text node, so
+   :empty really does hold until the cards arrive.
+   Deliberately wordless. This file is loaded for every DC and locale, and CSS
+   content has no way to reach a translated string. */
+#extension-listed:empty::before,
+#extension-listed:empty::after {
+    content: "";
+    height: 214px;
+    border-radius: 4px;
+    background-color: #ececec;
+    background-image: linear-gradient(90deg, #ececec 25%, #f7f7f7 37%, #ececec 63%);
+    background-size: 400% 100%;
+    /* Finite, then fade: a catalogue that returns nothing leaves #extension-listed
+       empty for good, and a placeholder shimmering forever reads as a hang. After
+       ~11s it bows out and leaves the panel as it would have been anyway. */
+    animation: za-mp-sheen 1.4s ease-in-out 8,
+               za-mp-sheen-out 0.4s linear 11.2s forwards;
+}
+
+@keyframes za-mp-sheen {
+    from { background-position: 100% 0; }
+    to   { background-position: 0 0; }
+}
+
+@keyframes za-mp-sheen-out {
+    to { opacity: 0; visibility: hidden; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #extension-listed:empty::before,
+    #extension-listed:empty::after {
+        animation: none;
+    }
 }
