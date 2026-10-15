@@ -137,6 +137,7 @@
     box-sizing: border-box;
     /* .p20 in the markup; 16px to match the rest of the chooser's cards. */
     padding: 16px !important;
+    box-shadow: none;
 }
 
 #extension-listed .secondComp .semibold {
