@@ -215,3 +215,186 @@
         animation: none;
     }
 }
+
+/* ===========================================================================
+   App detail page
+   ---------------------------------------------------------------------------
+   A card's link navigates the iframe to /app/embed/<service>/<slug>?mode=true,
+   which is a different page from the listing above: nothing here and nothing
+   there share a selector, so the two halves of this file never interact.
+
+   The page is laid out for a full browser window. Inside a ~556px panel its own
+   stylesheet breaks down - an inline rule sets .extn-tagline-title to
+   calc(100% - 522px), which collapses the title column to a few characters, and
+   the Overview body is two inline-block columns that cannot hold their widths.
+   =========================================================================== */
+
+/* ---- Hero ---------------------------------------------------------------- */
+
+/* The banner is a saturated blue block with white text at full width. At panel
+   width it is mostly empty, so flatten it to the surface and let the content
+   carry the hierarchy. */
+.extension-header.viewExtn {
+    background: #fff !important;
+    padding: 16px 0 0 !important;
+}
+
+.extension-header .container,
+.extension-details-page .container {
+    width: auto !important;
+    padding: 0 24px !important;
+    box-sizing: border-box;
+}
+
+/* The page pulls this 32px to the left to clear chrome it does not have here. */
+#isFrame.extn-table {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 16px;
+    width: auto !important;
+    margin: 0 !important;
+}
+
+#isFrame .back-btn.marketplace {
+    flex: 0 0 auto;
+    margin-top: 6px;
+}
+
+#isFrame .extn-cell.extension-icon {
+    flex: 0 0 76px;
+    width: 76px !important;
+    height: 76px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    background: #fff !important;
+}
+
+#isFrame .extn-cell.extension-icon img {
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: contain;
+}
+
+/* calc(100% - 522px) in the page's own inline <style>, which is a class
+   selector - the id here outranks it without needing !important on the width. */
+#isFrame .extn-cell.extn-tagline-title {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0;
+    padding: 0 !important;
+    color: #222 !important;
+}
+
+#isFrame .extn-title.extensionTitle {
+    margin: 0 0 4px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    line-height: 24px !important;
+    color: #222 !important;
+}
+
+#isFrame .extn-tagline.extn-content {
+    margin: 0 0 8px !important;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    color: #8a8a8a !important;
+}
+
+#isFrame .partnerTxt,
+#isFrame .partnerTxt a {
+    font-size: 13px !important;
+    color: #8a8a8a !important;
+}
+
+/* ---- Tabs ---------------------------------------------------------------- */
+
+.extension-details-page.viewExtn {
+    background: #fff !important;
+}
+
+ul.extension-tab-section {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 16px 0 0 !important;
+    background: transparent !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+}
+
+/* Floated jQuery-UI list items with their own borders; re-made as a flat strip.
+   The negative margin lifts the active underline onto the strip's own border. */
+ul.extension-tab-section > li.main-selector {
+    float: none !important;
+    margin: 0 0 -1px !important;
+    padding: 0 0 8px !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 2px solid transparent !important;
+    font-size: 13px !important;
+    color: #666 !important;
+    cursor: pointer;
+}
+
+/* .type-selector is the class the page moves between tabs to mark the active one. */
+ul.extension-tab-section > li.main-selector.type-selector {
+    color: #2c66dd !important;
+    border-bottom-color: #2c66dd !important;
+}
+
+/* Its own indicator renders as a short grey dash under every tab, active or not. */
+ul.extension-tab-section > li.main-selector .extn-hilighter {
+    display: none !important;
+}
+
+ul.extension-tab-section > li.main-selector > a {
+    text-decoration: none !important;
+}
+
+/* ---- Body ---------------------------------------------------------------- */
+
+/* Description and the spec table are side-by-side inline-blocks sized for a full
+   window; at panel width the description ends up a word per line. Stack them. */
+.view-more-details > .extn-information {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.view-more-details > .main-info.extn-information {
+    margin-bottom: 24px;
+}
+
+/* ---- Install bar --------------------------------------------------------- */
+
+/* The action sits top-right of the hero, which at this width is both cramped and
+   easy to miss. Pinned to the bottom edge instead, full width.
+   .details-conatiner (the page's own spelling) already reserves bottom padding;
+   it is widened here so the last content clears the bar. */
+#isFrame .extn-cell.extn-btn-block {
+    position: fixed !important;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 20;
+    width: auto !important;
+    box-sizing: border-box;
+    padding: 12px 24px !important;
+    text-align: center !important;
+    background: #fff;
+    border-top: 1px solid #e8e8e8;
+}
+
+#isFrame .extn-use-btn {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 8px 12px !important;
+    box-sizing: border-box;
+}
+
+.details-conatiner {
+    padding-bottom: 96px !important;
+}
