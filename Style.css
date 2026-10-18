@@ -11,12 +11,8 @@
 /* Everything above the card grid. They are all siblings of #extension-listed,
    so none of this hides the cards themselves.
 
-   #filter-bar          the filter row (#extnFilterCompn - All Categories /
-                        Edition / Price / Rating / Deployment type) and the
-                        search box (#searchComponent). Both are children of it,
-                        so one rule covers both; it is position:fixed and padded
-                        to reserve space, which is why hiding the children alone
-                        would leave a gap.
+   #filter-bar is kept for its search box; only its filter dropdowns are hidden -
+   see "Search" below.
    #featured            "Featured apps" banner.
    .editors-pick        "Editor's pick".
    #mp-tags-cloud       "Most used Tags".
@@ -24,13 +20,104 @@
 
    #promotion-service-apps is not on the Analytics embed today; it is listed so
    a promo that does render cannot push the grid down. */
-#filter-bar,
 #featured,
 .editors-pick,
 #mp-tags-cloud,
 #promotion-service-apps,
 #view-more-extension {
     display: none !important;
+}
+
+/* ---- Search -------------------------------------------------------------- */
+
+/* #filter-bar holds the filter dropdowns (#extnFilterCompn - All Categories /
+   Edition / Price / Rating / Deployment type) and the "Search apps" box
+   (#searchComponent). The dropdowns go; the search stays, right-aligned above the
+   cards as in the Analytics design.
+   Marketplace pins the bar position:fixed with 21.5px/30px padding on a grey band
+   (.non-feature #filter-bar, !important); the extra class here outranks that, so
+   it sits in the flow as a plain row instead. The box's width - 35px collapsed,
+   250px expanded - and its expand-on-click stay Marketplace's own. */
+.lightGreyBg.box-borderBx #filter-bar {
+    position: relative !important;
+    top: auto !important;
+    display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
+    width: auto !important;
+    min-height: 36px;
+    margin: 0 0 16px !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.lightGreyBg.box-borderBx #filter-bar #extnFilterCompn {
+    display: none !important;
+}
+
+.lightGreyBg.box-borderBx #filter-bar #searchComponent {
+    position: relative !important;
+    right: auto !important;
+    height: 36px;
+    box-sizing: border-box;
+    border: 1px solid #d8d8d8;
+    border-radius: 8px !important;
+    background: #fff !important;
+}
+
+.lightGreyBg.box-borderBx #filter-bar #searchComponent:focus-within {
+    border-color: #2c66dd;
+}
+
+/* The field is a table with its own 1px border; the input's forced margin grew it
+   to 39px, so it hung out of the 36px box as a second line. A 34px row with no
+   border of its own - the box above carries the border. Not clipped: this element
+   is also the typeahead container, and its results list opens below it. */
+.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__field {
+    display: flex !important;
+    align-items: stretch;
+    height: 34px !important;
+    border: 0 !important;
+    border-radius: 8px;
+}
+
+.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__field > * {
+    display: block !important;
+}
+
+.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__query {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Icon cell: Marketplace sizes it width:1% for its table layout, which collapsed
+   in the row and let the icon sit on the text. A fixed 34px square with the icon
+   centred (the markup's .mT10/.mL9 margins put it 4px low and off-centre). */
+.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__button {
+    flex: 0 0 34px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 34px !important;
+}
+
+.lightGreyBg.box-borderBx #filter-bar #searchComponent .search-icon {
+    margin: 0 !important;
+}
+
+/* The input carries an inline margin-top:3px !important, which no stylesheet can
+   override - it pushed the field 3px out of the box's bottom edge. Lifted back by
+   the same 3px instead. */
+.lightGreyBg.box-borderBx #filter-bar #searchComponent input.js-typeahead-extension_v2 {
+    position: relative;
+    top: -3px;
+    height: 34px !important;
+    margin: 0 !important;
+    padding: 0 10px 0 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    color: #222;
 }
 
 /* ---- Page wrapper ------------------------------------------------------- */
@@ -88,13 +175,21 @@
 
 /* The embed's cards are square-cornered and flat. Rounded with a resting shadow
    that lifts on hover, to match the cards in the rest of the chooser. */
+/* Height is an inline 214px; sized by content instead, so the padded footer below
+   is not clipped. */
 #extension-listed .default-card-wrapper {
-    border-radius: 4px;
+    height: auto !important;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
     overflow: hidden;
     background: #fff;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     transition: box-shadow 160ms ease;
+}
+
+#extension-listed .default-card-wrapper .firstComp {
+    height: auto !important;
 }
 
 #extension-listed .default-card-wrapper:hover {
@@ -108,6 +203,7 @@
    instead, and drop the border the embed sets on both the box and the image - at
    this width the doubled line is visible. */
 #extension-listed .default-card-wrapper .h150 {
+    border-bottom: 1px solid #eef0f3 !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,6 +219,65 @@
     border: 0 !important;
 }
 
+/* Footer: name left, rating right, price below - padded like the reference. The
+   name sat at ~16px beside stars pinned to 13px boxes with 5px gaps, and the price
+   was ~17px, larger than the name. */
+#extension-listed .default-card-wrapper .lh34 {
+    display: flex !important;
+    align-items: center;
+    gap: 8px;
+    margin: 0 !important;
+    padding: 12px 16px 2px !important;
+    line-height: 20px !important;
+}
+
+#extension-listed .default-card-wrapper .lh34 > .semibold {
+    flex: 1 1 auto;
+    width: auto !important;
+    min-width: 0;
+    padding: 0 !important;
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 20px !important;
+    color: #222;
+}
+
+#extension-listed .default-card-wrapper .lh34 > .alignright {
+    flex: 0 0 auto;
+    width: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 1px;
+}
+
+/* Stars in both the footer and the hover panel: sized by the glyph. */
+#extension-listed .default-card-wrapper a.lightgray1,
+#extension-listed .default-card-wrapper a.colorF5A623 {
+    width: auto !important;
+    margin: 0 1px 0 0 !important;
+    font-size: 12px !important;
+    line-height: 16px !important;
+    text-decoration: none !important;
+}
+
+#extension-listed .default-card-wrapper .no-rating {
+    margin-left: 4px;
+    font-size: 12px !important;
+    color: #8a8a8a;
+}
+
+#extension-listed .default-card-wrapper .firstComp > .mLR5.f14 {
+    margin: 0 !important;
+    padding: 0 16px 12px !important;
+    font-size: 13px !important;
+    line-height: 18px;
+    color: #8a8a8a !important;
+}
+
+#extension-listed .default-card-wrapper .firstComp > .mLR5.f14 > div {
+    padding: 0 !important;
+}
+
 /* ---- Card hover panel ---------------------------------------------------- */
 
 /* .secondComp is the detail panel the embed cross-fades in over the card. Its
@@ -134,41 +289,52 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 6px;
     box-sizing: border-box;
+    /* Its inline top:0 / height:100% came out 4px short of the card, and the card's
+       own bottom edge showed through as a dark strip. Pinned to all four sides. */
+    inset: 0 !important;
+    height: auto !important;
     /* .p20 in the markup; 16px to match the rest of the chooser's cards. */
     padding: 16px !important;
 }
 
 #extension-listed .secondComp .semibold {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
-    line-height: 20px;
+    line-height: 22px;
     color: #222;
+}
+
+#extension-listed .secondComp .mT5 {
+    margin: 0 !important;
 }
 
 /* The embed pins this to 110px and hard-clips it, so a long description is cut
    mid-line. Size it to its content and clamp instead, for an ellipsis. */
 #extension-listed .secondComp .extn-description {
     height: auto !important;
-    margin-top: 8px;
+    margin: 0 !important;
     opacity: 1;
-    line-height: 18px;
-    color: #222;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    color: #555;
 }
 
 #extension-listed .secondComp .extn-desc-line-clamp {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-/* Price, to the bottom-right corner. margin-top:auto takes up whatever the
-   description left over, so it lands on the bottom edge whatever the length. */
+/* Price straight under the description, as in the reference. */
 #extension-listed .secondComp .color3 {
-    margin-top: auto !important;
-    align-self: flex-end;
+    margin: 0 !important;
     width: auto !important;
+    font-size: 13px !important;
+    line-height: 18px;
+    color: #8a8a8a !important;
 }
 
 /* ---- Loading state ------------------------------------------------------ */
@@ -560,11 +726,23 @@ ul.extension-tab-section > li.main-selector > a {
 
 /* ---- Overview layout ---------------------------------------------------- */
 
-/* The page's inline <style> sets body,html to calc(100% + 12px), which pushed the
-   right gutter out of the panel - text ran to the very edge. */
+/* Both pages hide their scrollbar by making the body wider than the frame - the
+   detail page with calc(100% + 12px), the listing with calc(100% + 30px) plus a
+   right padding - so its right edge, scrollbar and all, sits off-screen. That also
+   pushed the detail page's text to the very edge, and on the listing it left the
+   cards 50px from the right but 20px from the left. Fitted to the frame instead,
+   no right padding, and the scrollbar hidden directly (still scrolls by wheel and
+   touch, as before). */
 html,
 body {
     width: 100% !important;
+    padding-right: 0 !important;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .details-conatiner {
