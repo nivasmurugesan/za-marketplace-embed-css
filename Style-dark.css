@@ -1,0 +1,326 @@
+/* ---------------------------------------------------------------------------
+   Zoho Analytics - Marketplace embed overrides, night mode
+   Loaded instead of Style.css when Analytics is in night mode. It pulls in
+   Style.css for all layout, then changes colours only, so the two can never drift
+   apart in size or spacing.
+
+   Palette is Analytics' own 6.0 night-mode tokens (ZAThemeVariables.css):
+     page #232323 (--secondary-bg)   surface #282a2d (--tertiary-bg)
+     raised #3c3f44 (--footer-bg)    stroke #474747 / #565656
+     text #ffffff / #cccccc / #888888    accent #4988e6 (--theme-blue)
+   Vendor banners and icons are artwork made for light backgrounds; they keep a
+   light-neutral plate rather than being inverted.
+   --------------------------------------------------------------------------- */
+
+@import url("Style.css");
+
+/* ---- Page ----------------------------------------------------------------- */
+
+html,
+body,
+.lightGreyBg.box-borderBx {
+    background-color: #232323 !important;
+    color: #cccccc !important;
+}
+
+/* ---- Listing cards ---------------------------------------------------------- */
+
+#extension-listed .default-card-wrapper {
+    border-color: #3c3f44 !important;
+    background: #282a2d !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+#extension-listed .default-card-wrapper:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+#extension-listed .default-card-wrapper .whiteBg,
+#extension-listed .secondComp {
+    background-color: #282a2d !important;
+}
+
+#extension-listed .default-card-wrapper .h150 {
+    background: #e9edf3 !important;
+    border-bottom-color: #3c3f44 !important;
+}
+
+#extension-listed .default-card-wrapper .lh34 > .semibold,
+#extension-listed .secondComp .semibold {
+    color: #ffffff !important;
+}
+
+#extension-listed .secondComp .extn-description {
+    color: #cccccc !important;
+}
+
+#extension-listed .default-card-wrapper .firstComp > .mLR5.f14,
+#extension-listed .secondComp .color3,
+#extension-listed .default-card-wrapper .no-rating {
+    color: #888888 !important;
+}
+
+#extension-listed .default-card-wrapper a.lightgray1 {
+    color: #565656 !important;
+}
+
+#extension-listed:empty::before,
+#extension-listed:empty::after {
+    background-color: #2c2e33;
+    background-image: linear-gradient(90deg, #2c2e33 25%, #3a3d43 37%, #2c2e33 63%);
+}
+
+/* ---- Detail page: hero and tabs -------------------------------------------- */
+
+.extension-header.viewExtn,
+.extension-details-page.viewExtn {
+    background: #232323 !important;
+    color: #cccccc !important;
+}
+
+#isFrame .extn-cell.extension-icon {
+    border-color: #474747 !important;
+    background: #e9edf3 !important;
+}
+
+#isFrame .extn-title.extensionTitle,
+#isFrame .extn-cell.extn-tagline-title {
+    color: #ffffff !important;
+}
+
+#isFrame .extn-tagline.extn-content {
+    color: #cccccc !important;
+}
+
+#isFrame .partnerTxt,
+#isFrame #avgrating-wrapper > span {
+    color: #888888 !important;
+}
+
+#isFrame #avgrating-wrapper a.rated.defaultIcon {
+    color: #565656 !important;
+}
+
+#isFrame .back-btn.marketplace {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234988e6' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 18l-6-6 6-6'/%3E%3C/svg%3E") !important;
+}
+
+#isFrame .back-btn.marketplace::after {
+    color: #4988e6;
+}
+
+.extension-details-page ul.extension-tab-section::before {
+    background: #474747 !important;
+}
+
+ul.extension-tab-section > li.main-selector {
+    color: #aaaaaa !important;
+}
+
+ul.extension-tab-section > li.main-selector.type-selector {
+    color: #4988e6 !important;
+    border-bottom-color: #4988e6 !important;
+}
+
+/* Links: the lighter night-mode blue, which keeps contrast on the dark surface. */
+.extension-header.viewExtn a,
+.extension-details-page.viewExtn a,
+#overview .addition-info td[onclick],
+#overview .review-process a.extn-content {
+    color: #4988e6 !important;
+}
+
+#overview .addition-info .extn-vendor-page svg path {
+    stroke: #4988e6;
+}
+
+/* ---- Detail page: Overview body --------------------------------------------- */
+
+#overview .shortDescription.extn-content,
+#overview #keyfeature li,
+#overview .addition-info td {
+    color: #cccccc !important;
+}
+
+#overview .extn-sub-head {
+    color: #ffffff !important;
+}
+
+#extension-tags a.tags-span {
+    background: rgba(73, 136, 230, 0.18) !important;
+    color: #7fadf0 !important;
+}
+
+#overview .addition-info {
+    background: #282a2d !important;
+}
+
+#overview .addition-info td.info-title,
+#overview .review-process .extn-content {
+    color: #888888 !important;
+}
+
+#overview ul.edition li {
+    border-color: #474747;
+    background: #232323;
+    color: #cccccc !important;
+}
+
+#overview .info-separator {
+    background: #3c3f44 !important;
+}
+
+#isFrame .extn-cell.extn-btn-block {
+    background: #232323;
+    border-top-color: #3c3f44;
+}
+
+/* ---- Dialogs (install, edit profile, version history) ------------------------ */
+
+.ui-dialog[aria-describedby="installAnalytics"],
+.ui-dialog[aria-describedby="edit-profile"],
+.ui-dialog[aria-describedby="version-history"],
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane {
+    background: #282a2d !important;
+    color: #cccccc;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane {
+    border-color: #3c3f44 !important;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-title,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-title,
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-title {
+    color: #ffffff !important;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:last-child,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane button:last-child {
+    border-color: #565656 !important;
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+/* Install dialog body. */
+#installAnalytics .section-block {
+    background: #232323 !important;
+}
+
+#installAnalytics .userPersonalDetails .section-block > div:first-child,
+#installAnalytics .action-details,
+#installAnalytics .fieldAns,
+#installAnalytics .msg-title,
+#installAnalytics .msg-service,
+#installAnalytics .msg-app-type,
+#installAnalytics td.cnt-spliter > .dialog-message {
+    color: #ffffff !important;
+}
+
+#installAnalytics .dialog-message,
+#installAnalytics .dialog-message:first-child {
+    color: #cccccc !important;
+}
+
+#installAnalytics .section-block td:first-child .dialog-message {
+    color: #888888 !important;
+}
+
+#installAnalytics a,
+#installAnalytics a.link-color,
+#user-of-details .editer-section .editer-icon span {
+    color: #4988e6 !important;
+}
+
+#installAnalytics .section-block select {
+    border-color: #474747;
+    background-color: #1c1d20;
+    color: #ffffff;
+}
+
+#installAnalytics .fcontainer .checkmark {
+    border-color: #888888;
+    background: transparent;
+}
+
+#installAnalytics .fcontainer input:checked ~ .checkmark,
+#installAnalytics .fcontainer:hover input ~ .checkmark {
+    border-color: #4988e6;
+}
+
+#installAnalytics .fcontainer input:checked ~ .checkmark {
+    background: #4988e6;
+}
+
+/* Edit Profile form. */
+#edit-profile table span.fieldName.mandatory-icon {
+    color: #cccccc;
+}
+
+#edit-profile .input-field,
+#edit-profile .select2-container .select2-selection--single {
+    border-color: #474747 !important;
+    background: #1c1d20 !important;
+    color: #ffffff;
+}
+
+#edit-profile .select2-selection__rendered {
+    color: #ffffff !important;
+}
+
+#edit-profile .input-field:disabled {
+    background: #2c2e33 !important;
+    color: #888888 !important;
+}
+
+#edit-profile .input-field:focus,
+#edit-profile .select2-container--open .select2-selection--single,
+#edit-profile .select2-container--focus .select2-selection--single {
+    border-color: #4988e6 !important;
+}
+
+/* Version history. */
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar-close {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cccccc' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E") !important;
+}
+
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar-close:hover {
+    background-color: #3c3f44 !important;
+}
+
+#version-history .version_form,
+#version-history #versionnumber,
+#version-history .versionhistory {
+    border-color: #3c3f44 !important;
+}
+
+#version-history .versionnumber,
+#version-history .releasenote,
+#version-history .releasenotemsg {
+    color: #ffffff !important;
+}
+
+#version-history .vpublishdate {
+    color: #888888 !important;
+}
+
+#version-history .versionhistory[style*="34, 109, 180"] {
+    background-color: rgba(73, 136, 230, 0.16) !important;
+    box-shadow: inset 3px 0 0 #4988e6;
+}
+
+#version-history .versionhistory[style*="34, 109, 180"] .versionnumber {
+    color: #7fadf0 !important;
+}
+
+#version-history .versionhistory[style*="34, 109, 180"] .vpublishdate {
+    color: #cccccc !important;
+}
