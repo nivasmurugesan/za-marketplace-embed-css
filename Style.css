@@ -322,13 +322,19 @@
 
 .extension-details-page.viewExtn {
     background: #fff !important;
+    padding-top: 16px !important;
 }
 
-ul.extension-tab-section {
+/* Marketplace paints this strip #f4f4f4 with !important from a two-class selector,
+   so ours needs the extra class to win. No top margin: it collapsed through the
+   page wrapper and showed a 16px strip of the grey body between hero and tabs -
+   the wrapper's own padding (below) makes that space instead. */
+.extension-details-page ul.extension-tab-section {
     display: flex !important;
     flex-wrap: wrap;
     gap: 20px;
-    margin: 16px 0 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: transparent !important;
     border-bottom: 1px solid #e8e8e8 !important;
 }
@@ -405,10 +411,19 @@ ul.extension-tab-section > li.main-selector > a {
     color: #2c66dd !important;
 }
 
-/* Except the tag chips, which are links drawn as filled blue pills - blue text on
-   them would be unreadable. */
+/* Tag chips: a soft pill in the link blue, in place of Marketplace's dark square
+   (which also turned blue-on-blue under the link rule above). */
 #extension-tags a.tags-span {
-    color: #fff !important;
+    display: inline-block;
+    margin: 0 !important;
+    padding: 4px 12px !important;
+    border: 0 !important;
+    border-radius: 12px !important;
+    background: #eaf0fc !important;
+    color: #2c66dd !important;
+    font-size: 13px !important;
+    line-height: 16px !important;
+    text-decoration: none !important;
 }
 
 /* Not offered from inside Analytics: "For Support Requests", "Share This App" and
@@ -432,6 +447,174 @@ ul.extension-tab-section > li.main-selector > a {
 #vendor .extn-information > .extn-sub-head,
 #vendor .extn-information > .extn-sub-head ~ * {
     display: none !important;
+}
+
+/* ---- Overview layout ---------------------------------------------------- */
+
+/* The page's inline <style> sets body,html to calc(100% + 12px), which pushed the
+   right gutter out of the panel - text ran to the very edge. */
+html,
+body {
+    width: 100% !important;
+}
+
+.details-conatiner {
+    padding-top: 16px !important;
+}
+
+#overview .shortDescription.extn-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 22px !important;
+    color: #222 !important;
+}
+
+/* One heading style and one gap between sections. Each block carried its own
+   stray spacing (20px / 5px / 20px paddings, inline padding-bottom:0px), so the
+   gaps ranged from 0 to ~60px. */
+#overview .extn-sub-head {
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    line-height: 24px !important;
+    color: #222 !important;
+}
+
+#overview .keyfeature,
+#overview #tag-list,
+#overview .extensionResources,
+#overview .edition-info {
+    margin: 24px 0 0 !important;
+    padding: 0 !important;
+}
+
+/* A wrapping row with its own gap: inline chips left a margin plus line-box space
+   under the last row, double the gap before the next section. */
+#overview #extension-tags {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 !important;
+}
+
+/* Empty on most apps, but still 20px of padding. */
+#overview .optDescription:empty {
+    display: none !important;
+}
+
+#overview #keyfeature {
+    margin: 0 !important;
+    padding-left: 18px !important;
+}
+
+#overview #keyfeature li {
+    margin: 0 0 4px !important;
+    line-height: 22px !important;
+    color: #222 !important;
+}
+
+/* "RESOURCES" is upper case in the markup; sentence case like the other heads. */
+#overview .extensionResources .extn-sub-head {
+    text-transform: lowercase;
+}
+
+#overview .extensionResources .extn-sub-head::first-letter {
+    text-transform: uppercase;
+}
+
+/* One link per line by layout rather than <br>s. */
+#overview .extensionResources br {
+    display: none;
+}
+
+#overview .extensionResources a {
+    display: block;
+    width: fit-content;
+    line-height: 28px !important;
+}
+
+/* Details table: the same grey box and 120px label column as the install
+   dialog. */
+#overview .addition-info {
+    margin: 24px 0 0 !important;
+    padding: 16px !important;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background: #f7f9fc !important;
+}
+
+#overview .addition-info table.vrs-cat-pric {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: collapse;
+}
+
+#overview .addition-info td {
+    padding: 4px 0 !important;
+    line-height: 24px !important;
+    vertical-align: top;
+    color: #222;
+}
+
+#overview .addition-info td.info-title {
+    width: 120px !important;
+    padding-right: 12px !important;
+    color: #8a8a8a !important;
+}
+
+/* Version opens the version history; it was a hard-coded #03a9f5. */
+#overview .addition-info td[onclick] {
+    color: #2c66dd !important;
+}
+
+#overview .addition-info .extn-vendor-page {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+#overview .addition-info .extn-vendor-page svg path {
+    stroke: #2c66dd;
+}
+
+/* Compatible Editions as chips rather than a bulleted column. */
+#overview ul.edition {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+}
+
+#overview ul.edition li {
+    margin: 0 !important;
+    padding: 4px 12px !important;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    font-size: 13px !important;
+    line-height: 16px !important;
+    color: #222 !important;
+    list-style: none !important;
+}
+
+#overview .info-separator {
+    margin: 24px 0 16px !important;
+    background: #e8e8e8 !important;
+}
+
+#overview .review-process .extn-content {
+    margin: 0 !important;
+    line-height: 20px !important;
+    color: #8a8a8a !important;
+}
+
+/* Its "Click here" link shares .extn-content; keep it a link. */
+#overview .review-process a.extn-content {
+    color: #2c66dd !important;
 }
 
 /* ---- Install bar --------------------------------------------------------- */
