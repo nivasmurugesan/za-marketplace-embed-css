@@ -137,7 +137,6 @@
     box-sizing: border-box;
     /* .p20 in the markup; 16px to match the rest of the chooser's cards. */
     padding: 16px !important;
-    box-shadow: none;
 }
 
 #extension-listed .secondComp .semibold {
@@ -256,9 +255,17 @@
     margin: 0 !important;
 }
 
+/* Marketplace draws this from its sprite (.marketplace, cell -191px -410px), and that
+   cell is a white arrow meant for the blue banner - on the white hero above it was
+   still there and clickable, just invisible. Same 30px box, drawn dark instead; the
+   page's own .back-btn opacity/hover rules still apply. */
 #isFrame .back-btn.marketplace {
     flex: 0 0 auto;
     margin-top: 6px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23222222' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 12H5M12 19l-7-7 7-7'/%3E%3C/svg%3E") !important;
+    background-position: center !important;
+    background-size: 20px 20px !important;
+    background-repeat: no-repeat !important;
 }
 
 #isFrame .extn-cell.extension-icon {
@@ -301,14 +308,13 @@
 
 #isFrame .extn-tagline.extn-content {
     margin: 0 0 8px !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     line-height: 18px !important;
     color: #8a8a8a !important;
 }
 
-#isFrame .partnerTxt,
-#isFrame .partnerTxt a {
-    font-size: 13px !important;
+#isFrame .partnerTxt {
+    font-size: 14px !important;
     color: #8a8a8a !important;
 }
 
@@ -336,7 +342,7 @@ ul.extension-tab-section > li.main-selector {
     background: transparent !important;
     border: 0 !important;
     border-bottom: 2px solid transparent !important;
-    font-size: 13px !important;
+    font-size: 14px !important;
     color: #666 !important;
     cursor: pointer;
 }
@@ -370,6 +376,49 @@ ul.extension-tab-section > li.main-selector > a {
     margin-bottom: 24px;
 }
 
+/* One body text size. Marketplace sets 13-16px across these, much of it in inline
+   style attributes (hence !important). Headings are left alone: the title (18px)
+   and the section heads keep their sizes so the page still has a hierarchy. */
+.details-conatiner p,
+.details-conatiner li,
+.details-conatiner td,
+.details-conatiner span,
+.details-conatiner a,
+.details-conatiner div,
+.details-conatiner .shortDescription.extn-content {
+    font-size: 14px !important;
+}
+
+/* Links in Analytics blue. Several carry an inline color (#03a9f5). Scoped to the
+   detail page - the listing above is all links too, and its cards keep their own
+   colours. */
+.extension-header.viewExtn a,
+.extension-details-page.viewExtn a {
+    color: #2c66dd !important;
+}
+
+/* Except the tag chips, which are links drawn as filled blue pills - blue text on
+   them would be unreadable. */
+#extension-tags a.tags-span {
+    color: #fff !important;
+}
+
+/* Not offered from inside Analytics: "For Support Requests", "Share This App" and
+   "Request a Demo" (the button calls App_Demo.Request()). */
+.extension-details-page .support-request,
+.extension-details-page .share-extension,
+.extension-details-page button.request-demo {
+    display: none !important;
+}
+
+/* Vendor tab: "Contact us" and everything after it (website, mail, phone, Terms of
+   Service). The heading carries no class or id of its own, but it is the only
+   .extn-sub-head in this block, so it and its following siblings are exactly that. */
+#vendor .extn-information > .extn-sub-head,
+#vendor .extn-information > .extn-sub-head ~ * {
+    display: none !important;
+}
+
 /* ---- Install bar --------------------------------------------------------- */
 
 /* The action sits top-right of the hero, which at this width is both cramped and
@@ -389,11 +438,21 @@ ul.extension-tab-section > li.main-selector > a {
     border-top: 1px solid #e8e8e8;
 }
 
+/* 16px tall overall: no vertical padding, the label held to a 16px line, and the
+   page's own border removed so it does not add to the height. The page sets the
+   label at 16px, which needs 18px and was clipped; 14px, like the rest of the page. */
 #isFrame .extn-use-btn {
     width: 100% !important;
+    height: 16px !important;
     margin: 0 !important;
-    padding: 8px 12px !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
     box-sizing: border-box;
+    border: 0 !important;
+    border-radius: 8px !important;
+    background: #2c66dd !important;
+    color: #fff !important;
 }
 
 .details-conatiner {
