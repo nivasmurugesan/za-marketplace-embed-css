@@ -369,6 +369,7 @@ ul.extension-tab-section > li.main-selector > a {
 .view-more-details > .extn-information {
     display: block !important;
     width: 100% !important;
+    padding: 0 !important;
     box-sizing: border-box;
 }
 
@@ -411,6 +412,13 @@ ul.extension-tab-section > li.main-selector > a {
     display: none !important;
 }
 
+/* Ratings & Reviews tab: the "Share your experience with us / Write your review"
+   block. Only this one of the three .review-info-section blocks carries
+   .rating-fields - the average rating and the star bars stay. */
+.review-info-section.rating-fields {
+    display: none !important;
+}
+
 /* Vendor tab: "Contact us" and everything after it (website, mail, phone, Terms of
    Service). The heading carries no class or id of its own, but it is the only
    .extn-sub-head in this block, so it and its following siblings are exactly that. */
@@ -438,14 +446,15 @@ ul.extension-tab-section > li.main-selector > a {
     border-top: 1px solid #e8e8e8;
 }
 
-/* 16px tall overall: no vertical padding, the label held to a 16px line, and the
-   page's own border removed so it does not add to the height. The page sets the
-   label at 16px, which needs 18px and was clipped; 14px, like the rest of the page. */
+/* A 16px label line with 8px above and below: 32px overall, since box-sizing is
+   border-box (height includes the padding). The page's own border is removed so it
+   does not add to that. The page sets the label at 16px, which needs 18px; 14px,
+   like the rest of the page, fits the 16px line. */
 #isFrame .extn-use-btn {
     width: 100% !important;
-    height: 16px !important;
+    height: 32px !important;
     margin: 0 !important;
-    padding: 0 12px !important;
+    padding: 8px 12px !important;
     font-size: 14px !important;
     line-height: 16px !important;
     box-sizing: border-box;
