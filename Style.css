@@ -239,6 +239,11 @@
     padding: 16px 0 0 !important;
 }
 
+/* Space under the header block; the tab strip below carries the divider. */
+.extension-header.viewExtn #isFrame {
+    padding-bottom: 8px;
+}
+
 .extension-header .container,
 .extension-details-page .container {
     width: auto !important;
@@ -246,26 +251,48 @@
     box-sizing: border-box;
 }
 
-/* The page pulls this 32px to the left to clear chrome it does not have here. */
+/* Laid out like the Analytics app-details header: Back on its own row, then the
+   icon tile beside a tight column of name, tagline, vendor and rating. The page
+   pulls the table 32px left (inline) to clear chrome it does not have here. */
 #isFrame.extn-table {
     display: flex !important;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
     gap: 16px;
     width: auto !important;
     margin: 0 !important;
 }
 
-/* Marketplace draws this from its sprite (.marketplace, cell -191px -410px), and that
-   cell is a white arrow meant for the blue banner - on the white hero above it was
-   still there and clickable, just invisible. Same 30px box, drawn dark instead; the
-   page's own .back-btn opacity/hover rules still apply. */
+/* Marketplace draws this from its sprite (.marketplace, cell -191px -410px), a
+   white arrow meant for the blue banner - invisible on the white hero. Redrawn as
+   a blue chevron with a "Back" label, on a row of its own. The label is CSS
+   content, so it is not translated. */
 #isFrame .back-btn.marketplace {
-    flex: 0 0 auto;
-    margin-top: 6px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23222222' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 12H5M12 19l-7-7 7-7'/%3E%3C/svg%3E") !important;
-    background-position: center !important;
-    background-size: 20px 20px !important;
+    flex: 0 0 100%;
+    display: inline-flex;
+    align-items: center;
+    width: auto !important;
+    height: 24px !important;
+    margin: 0 !important;
+    padding-left: 20px;
+    box-sizing: border-box;
+    opacity: 1 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c66dd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 18l-6-6 6-6'/%3E%3C/svg%3E") !important;
+    background-position: left center !important;
+    background-size: 16px 16px !important;
     background-repeat: no-repeat !important;
+    cursor: pointer;
+}
+
+#isFrame .back-btn.marketplace::after {
+    content: "Back";
+    font-size: 14px;
+    line-height: 24px;
+    color: #2c66dd;
+}
+
+#isFrame .back-btn.marketplace:hover::after {
+    text-decoration: underline;
 }
 
 #isFrame .extn-cell.extension-icon {
@@ -278,7 +305,7 @@
     justify-content: center;
     overflow: hidden;
     border: 1px solid #e8e8e8;
-    border-radius: 6px;
+    border-radius: 12px;
     background: #fff !important;
 }
 
@@ -291,7 +318,10 @@
 /* calc(100% - 522px) in the page's own inline <style>, which is a class
    selector - the id here outranks it without needing !important on the width. */
 #isFrame .extn-cell.extn-tagline-title {
-    flex: 1 1 auto;
+    flex: 1 1 0;
+    display: flex !important;
+    flex-direction: column;
+    gap: 4px;
     width: auto !important;
     min-width: 0;
     padding: 0 !important;
@@ -299,23 +329,73 @@
 }
 
 #isFrame .extn-title.extensionTitle {
-    margin: 0 0 4px !important;
-    font-size: 18px !important;
-    font-weight: 600 !important;
-    line-height: 24px !important;
+    margin: 0 !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    line-height: 26px !important;
     color: #222 !important;
+    overflow-wrap: anywhere;
 }
 
 #isFrame .extn-tagline.extn-content {
-    margin: 0 0 8px !important;
+    margin: 0 !important;
     font-size: 14px !important;
-    line-height: 18px !important;
-    color: #8a8a8a !important;
+    line-height: 20px !important;
+    color: #555 !important;
 }
 
 #isFrame .partnerTxt {
+    display: block !important;
     font-size: 14px !important;
     color: #8a8a8a !important;
+}
+
+/* The hidden duplicate "Developed by" line stays hidden. */
+#isFrame p.partnerTxt[style*="display:none"] {
+    display: none !important;
+}
+
+/* Rating row: its wrapper carries an inline margin-top, and the stars sit on a
+   30px line with 4px above and below - most of the gap under the vendor line. */
+#isFrame .extn-tagline-title > div {
+    margin: 0 !important;
+}
+
+#isFrame #avgrating-wrapper {
+    display: flex !important;
+    align-items: center;
+    gap: 2px;
+    height: auto !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+}
+
+/* Marketplace pins each star to a 13x15 box; size them by the glyph instead. */
+#isFrame #avgrating-wrapper a.rated {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    font-size: 16px !important;
+    line-height: 20px !important;
+    text-decoration: none !important;
+}
+
+/* Stars are links, so the blanket link colour turned them blue. Marketplace's
+   own colours back: filled gold, empty grey. */
+#isFrame #avgrating-wrapper a.rated.selectorIcon {
+    color: #f5a623 !important;
+}
+
+#isFrame #avgrating-wrapper a.rated.defaultIcon {
+    color: #d8d8d8 !important;
+}
+
+/* The count follows two &nbsp;s in the markup, which already space it. */
+#isFrame #avgrating-wrapper > span {
+    font-size: 14px;
+    line-height: 20px;
+    color: #8a8a8a;
 }
 
 /* ---- Tabs ---------------------------------------------------------------- */
