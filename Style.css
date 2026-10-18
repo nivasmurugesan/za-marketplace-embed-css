@@ -11,8 +11,12 @@
 /* Everything above the card grid. They are all siblings of #extension-listed,
    so none of this hides the cards themselves.
 
-   #filter-bar is kept for its search box; only its filter dropdowns are hidden -
-   see "Search" below.
+   #filter-bar          the filter row (#extnFilterCompn - All Categories /
+                        Edition / Price / Rating / Deployment type) and the
+                        search box (#searchComponent). Both are children of it,
+                        so one rule covers both; it is position:fixed and padded
+                        to reserve space, which is why hiding the children alone
+                        would leave a gap.
    #featured            "Featured apps" banner.
    .editors-pick        "Editor's pick".
    #mp-tags-cloud       "Most used Tags".
@@ -20,104 +24,13 @@
 
    #promotion-service-apps is not on the Analytics embed today; it is listed so
    a promo that does render cannot push the grid down. */
+#filter-bar,
 #featured,
 .editors-pick,
 #mp-tags-cloud,
 #promotion-service-apps,
 #view-more-extension {
     display: none !important;
-}
-
-/* ---- Search -------------------------------------------------------------- */
-
-/* #filter-bar holds the filter dropdowns (#extnFilterCompn - All Categories /
-   Edition / Price / Rating / Deployment type) and the "Search apps" box
-   (#searchComponent). The dropdowns go; the search stays, right-aligned above the
-   cards as in the Analytics design.
-   Marketplace pins the bar position:fixed with 21.5px/30px padding on a grey band
-   (.non-feature #filter-bar, !important); the extra class here outranks that, so
-   it sits in the flow as a plain row instead. The box's width - 35px collapsed,
-   250px expanded - and its expand-on-click stay Marketplace's own. */
-.lightGreyBg.box-borderBx #filter-bar {
-    position: relative !important;
-    top: auto !important;
-    display: flex !important;
-    justify-content: flex-end;
-    align-items: center;
-    width: auto !important;
-    min-height: 36px;
-    margin: 0 0 16px !important;
-    padding: 0 !important;
-    background: transparent !important;
-}
-
-.lightGreyBg.box-borderBx #filter-bar #extnFilterCompn {
-    display: none !important;
-}
-
-.lightGreyBg.box-borderBx #filter-bar #searchComponent {
-    position: relative !important;
-    right: auto !important;
-    height: 36px;
-    box-sizing: border-box;
-    border: 1px solid #d8d8d8;
-    border-radius: 8px !important;
-    background: #fff !important;
-}
-
-.lightGreyBg.box-borderBx #filter-bar #searchComponent:focus-within {
-    border-color: #2c66dd;
-}
-
-/* The field is a table with its own 1px border; the input's forced margin grew it
-   to 39px, so it hung out of the 36px box as a second line. A 34px row with no
-   border of its own - the box above carries the border. Not clipped: this element
-   is also the typeahead container, and its results list opens below it. */
-.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__field {
-    display: flex !important;
-    align-items: stretch;
-    height: 34px !important;
-    border: 0 !important;
-    border-radius: 8px;
-}
-
-.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__field > * {
-    display: block !important;
-}
-
-.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__query {
-    flex: 1 1 auto;
-    min-width: 0;
-}
-
-/* Icon cell: Marketplace sizes it width:1% for its table layout, which collapsed
-   in the row and let the icon sit on the text. A fixed 34px square with the icon
-   centred (the markup's .mT10/.mL9 margins put it 4px low and off-centre). */
-.lightGreyBg.box-borderBx #filter-bar #searchComponent .typeahead__button {
-    flex: 0 0 34px;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 34px !important;
-}
-
-.lightGreyBg.box-borderBx #filter-bar #searchComponent .search-icon {
-    margin: 0 !important;
-}
-
-/* The input carries an inline margin-top:3px !important, which no stylesheet can
-   override - it pushed the field 3px out of the box's bottom edge. Lifted back by
-   the same 3px instead. */
-.lightGreyBg.box-borderBx #filter-bar #searchComponent input.js-typeahead-extension_v2 {
-    position: relative;
-    top: -3px;
-    height: 34px !important;
-    margin: 0 !important;
-    padding: 0 10px 0 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    font-size: 14px !important;
-    color: #222;
 }
 
 /* ---- Page wrapper ------------------------------------------------------- */
@@ -736,8 +649,13 @@ ul.extension-tab-section > li.main-selector > a {
 html,
 body {
     width: 100% !important;
-    padding-right: 0 !important;
     scrollbar-width: none;
+}
+
+/* Marketplace sets body { padding-right: 30px !important } after this file loads,
+   so a plain body selector loses on order; the extra element wins on specificity. */
+html > body {
+    padding-right: 0 !important;
 }
 
 html::-webkit-scrollbar,
