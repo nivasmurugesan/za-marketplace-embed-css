@@ -358,6 +358,17 @@ ul.extension-tab-section > li.main-selector .extn-hilighter {
     display: none !important;
 }
 
+/* Ratings & Reviews and Vendor are not offered inside Analytics. The tab and its
+   panel both go: the page shows a panel with jQuery's .show() (an inline
+   display), so the panels need !important; with their tabs gone nothing can
+   select them anyway. */
+ul.extension-tab-section > li[view-class="ratingsReview"],
+ul.extension-tab-section > li[view-class="vendor"],
+#ratingsReview,
+#vendor {
+    display: none !important;
+}
+
 ul.extension-tab-section > li.main-selector > a {
     text-decoration: none !important;
 }
@@ -371,10 +382,6 @@ ul.extension-tab-section > li.main-selector > a {
     width: 100% !important;
     padding: 0 !important;
     box-sizing: border-box;
-}
-
-.view-more-details > .main-info.extn-information {
-    margin-bottom: 24px;
 }
 
 /* One body text size. Marketplace sets 13-16px across these, much of it in inline
