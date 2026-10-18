@@ -274,18 +274,22 @@
     width: auto !important;
     height: 24px !important;
     margin: 0 !important;
-    padding-left: 20px;
+    padding-left: 14px;
     box-sizing: border-box;
     opacity: 1 !important;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232c66dd' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 18l-6-6 6-6'/%3E%3C/svg%3E") !important;
-    background-position: left center !important;
+    /* The chevron's path starts 6px into its 16px box; shifted so its point lines
+       up with the icon tile's left edge below. */
+    background-position: -5px center !important;
     background-size: 16px 16px !important;
     background-repeat: no-repeat !important;
     cursor: pointer;
 }
 
+/* Generated content does not pick up the page's Lato here and fell back to Times. */
 #isFrame .back-btn.marketplace::after {
     content: "Back";
+    font-family: 'LatoRegular', 'Lato', sans-serif;
     font-size: 14px;
     line-height: 24px;
     color: #2c66dd;
@@ -361,7 +365,11 @@
     margin: 0 !important;
 }
 
+/* Display only: the stars are links (href="javascript:;") that jump to Ratings &
+   Reviews, which is hidden in Analytics. */
 #isFrame #avgrating-wrapper {
+    pointer-events: none;
+    cursor: default !important;
     display: flex !important;
     align-items: center;
     gap: 2px;
@@ -419,11 +427,32 @@
     border-bottom: 1px solid #e8e8e8 !important;
 }
 
-/* Floated jQuery-UI list items with their own borders; re-made as a flat strip.
-   The negative margin lifts the active underline onto the strip's own border. */
+/* The visible track is Marketplace's ::before on the strip - an absolute 2px
+   #d8d8d8 bar; the strip's own border-bottom is forced to 0 by a three-class
+   !important rule. Made a 1px line along the strip's bottom edge, and the active
+   tab's 2px underline sits on that same edge, above it, so the two meet exactly. */
+.extension-details-page ul.extension-tab-section {
+    position: relative !important;
+}
+
+.extension-details-page ul.extension-tab-section::before {
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    height: 1px !important;
+    margin: 0 !important;
+    background: #e0e0e0 !important;
+    z-index: 0;
+}
+
+/* Floated jQuery-UI list items with their own borders; re-made as a flat strip. */
 ul.extension-tab-section > li.main-selector {
+    position: relative;
+    z-index: 1;
     float: none !important;
-    margin: 0 0 -1px !important;
+    margin: 0 !important;
     padding: 0 0 8px !important;
     background: transparent !important;
     border: 0 !important;
@@ -739,19 +768,22 @@ body {
 }
 
 /* ===========================================================================
-   Install confirmation dialog
+   Install confirmation, Edit Profile and Version history dialogs
    ---------------------------------------------------------------------------
    The jQuery UI dialog Marketplace opens from Install ("Confirm Installation").
    It is appended to <body>, outside .extension-details-page, so none of the
-   detail-page rules above reach it. Everything here is scoped to this one
-   dialog by its content id, so Marketplace's other dialogs are left alone.
+   detail-page rules above reach them. Everything here is scoped by content id to
+   these three dialogs - the box, title bar and buttons are shared, the bodies are
+   separate - so Marketplace's other dialogs are left alone.
    =========================================================================== */
 
 /* Opened with an inline width:780px and left:0 - wider than the panel, so its
    right edge, the Cancel button and the end of every sentence were cut off.
    Pinned 16px in from both edges instead; jQuery keeps writing left/top inline,
    hence !important. */
-.ui-dialog[aria-describedby="installAnalytics"] {
+.ui-dialog[aria-describedby="installAnalytics"],
+.ui-dialog[aria-describedby="edit-profile"],
+.ui-dialog[aria-describedby="version-history"] {
     left: 16px !important;
     right: 16px !important;
     width: auto !important;
@@ -763,12 +795,19 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
 }
 
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-titlebar {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-titlebar,
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar {
+    /* Marketplace forces #e9e9e9 here and only lifts it for .title-changes
+       dialogs, which Edit Profile is not. */
+    background: #fff !important;
     padding: 16px 20px !important;
     border-bottom: 1px solid #e8e8e8 !important;
 }
 
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-title {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-title,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-title,
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-title {
     font-size: 16px !important;
     line-height: 24px !important;
     color: #222 !important;
@@ -991,20 +1030,23 @@ body {
 /* Install and Cancel side by side, filling the bar. Install is the page's first
    button and carries .btn-hide (half opacity, no clicks) until both terms boxes
    are ticked - that behaviour is the page's and is kept. */
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane {
     margin: 0 !important;
     padding: 12px 20px 16px !important;
     border-top: 1px solid #e8e8e8 !important;
     box-shadow: none !important;
 }
 
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonset {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonset,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonset {
     float: none !important;
     display: flex;
     gap: 12px;
 }
 
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane button {
     flex: 1 1 0;
     width: auto !important;
     height: 32px !important;
@@ -1015,14 +1057,271 @@ body {
     font: 14px/16px 'LatoSemibold', sans-serif !important;
 }
 
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:first-child {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:first-child,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane button:first-child {
     border: 0 !important;
     background: #2c66dd !important;
     color: #fff !important;
 }
 
-.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:last-child {
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:last-child,
+.ui-dialog[aria-describedby="edit-profile"] .ui-dialog-buttonpane button:last-child {
     border: 1px solid #d8d8d8 !important;
     background: #fff !important;
     color: #222 !important;
+}
+
+/* ---- Edit Profile ------------------------------------------------------- */
+
+/* Opened from "Edit Profile" in the install dialog, at an inline width of 750px.
+   It shares the box, title bar and buttons above (Save takes the blue). The form:
+   one label column, full-width inputs, and labels on the inputs' centre line -
+   Marketplace pulled them up 20px onto a 48px line, so each label sat above its
+   field. */
+#edit-profile {
+    max-height: calc(100vh - 200px) !important;
+    margin: 0 !important;
+    padding: 16px 20px !important;
+    box-sizing: border-box;
+}
+
+#edit-profile table {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+#edit-profile td {
+    padding: 6px 0 !important;
+    vertical-align: top;
+}
+
+/* An inline width:130px sits on one of the input cells. */
+#edit-profile td:last-child {
+    width: auto !important;
+}
+
+#edit-profile td:first-child {
+    width: 110px !important;
+    padding-right: 12px !important;
+}
+
+#edit-profile table span.fieldName.mandatory-icon {
+    display: inline-block;
+    width: auto !important;
+    margin: 0 !important;
+    font: 14px/32px 'LatoRegular', sans-serif !important;
+    color: #555;
+}
+
+/* Same inline asterisk as the install dialog. On "Job Title" it is kept but
+   invisible (.mandatory-hide), so all four labels still start at the same x. */
+#edit-profile .mandatory-icon::before {
+    position: static !important;
+    margin-right: 2px;
+    font-size: 14px !important;
+    color: #e54946;
+}
+
+#edit-profile .input-field {
+    display: block;
+    margin: 0 !important;
+    width: 100% !important;
+    height: 32px !important;
+    padding: 0 10px !important;
+    box-sizing: border-box;
+    border: 1px solid #d8d8d8 !important;
+    border-radius: 6px !important;
+    background: #fff;
+    font: 14px/30px 'LatoRegular', sans-serif !important;
+    color: #222;
+}
+
+#edit-profile .input-field:focus {
+    border-color: #2c66dd !important;
+}
+
+/* Name and Email come from the account and are read-only. */
+#edit-profile .input-field:disabled {
+    background: #f4f4f4 !important;
+    color: #8a8a8a !important;
+}
+
+/* Country (select2). Its own container is fixed at an inline 312px and 28px tall
+   with a grey #aaa border; matched to the inputs. */
+#edit-profile .select2-container {
+    width: 100% !important;
+}
+
+#edit-profile .select2-container .select2-selection--single {
+    height: 32px !important;
+    border: 1px solid #d8d8d8 !important;
+    border-radius: 6px !important;
+}
+
+#edit-profile .select2-container--open .select2-selection--single,
+#edit-profile .select2-container--focus .select2-selection--single {
+    border-color: #2c66dd !important;
+}
+
+#edit-profile .select2-selection__rendered {
+    padding-left: 10px !important;
+    font: 14px/30px 'LatoRegular', sans-serif !important;
+    color: #222 !important;
+}
+
+#edit-profile .select2-selection__arrow {
+    height: 30px !important;
+    right: 6px !important;
+}
+
+/* Validation text. Marketplace hides it with .fSize (font-size:0), which still
+   left its line-height and margin - a blank 22px strip under every field. Collapsed
+   while hidden; shown as before once Marketplace drops .fSize on an error. */
+#edit-profile .error.fSize {
+    display: none !important;
+}
+
+#edit-profile .error {
+    margin-top: 4px;
+    line-height: 18px;
+}
+
+/* ---- Version history ---------------------------------------------------- */
+
+/* Opened from "Version" in the details box, at an inline width of 745px. Shares
+   the box and title bar above; it has no button bar, but it does show jQuery's
+   close button, which Marketplace makes a floating white circle pushed half
+   outside the dialog's right edge - off-panel here. */
+.ui-dialog[aria-describedby="version-history"] {
+    /* Marketplace sets overflow:unset !important so its old close circle could
+       hang outside; the close button now sits inside the title bar, so the box
+       clips to its rounded corners like the other dialogs. */
+    overflow: hidden !important;
+}
+
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-title {
+    height: auto !important;
+    padding: 0 !important;
+    letter-spacing: normal !important;
+    font-weight: 600 !important;
+}
+
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar-close {
+    top: 50% !important;
+    right: 12px !important;
+    width: 28px !important;
+    height: 28px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    transform: translateY(-50%) !important;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23555555' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 6l12 12M18 6L6 18'/%3E%3C/svg%3E") center / 16px 16px no-repeat !important;
+}
+
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar-close:hover {
+    background-color: #f4f4f4 !important;
+}
+
+.ui-dialog[aria-describedby="version-history"] .ui-dialog-titlebar-close .ui-icon {
+    display: none !important;
+}
+
+/* Marketplace fixes the body at calc(100vh - 245px) with overflow hidden - a tall
+   empty box for a single version. Sized by content instead, capped to the panel. */
+#version-history {
+    height: auto !important;
+    max-height: calc(100vh - 140px) !important;
+    padding: 16px 20px 20px !important;
+    box-sizing: border-box;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+/* border-box: at width:100% its border made it 2px wider than the body, which
+   showed a horizontal scrollbar along the dialog's bottom edge. */
+#version-history .version_form {
+    display: flex !important;
+    box-sizing: border-box;
+    height: auto !important;
+    min-height: 160px;
+    border: 1px solid #e8e8e8 !important;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Version list: 250px fixed, most of the panel. 200px keeps "Published on
+   <date>" on one line. */
+#version-history #versionnumber {
+    flex: 0 0 200px;
+    width: 200px !important;
+    height: auto !important;
+    max-height: calc(100vh - 220px);
+    border-right: 1px solid #e8e8e8 !important;
+    white-space: normal !important;
+}
+
+#version-history .versionhistory {
+    padding: 12px 16px !important;
+    border-bottom: 1px solid #e8e8e8;
+    cursor: pointer;
+}
+
+#version-history div.versionhistory::after {
+    content: none !important;
+}
+
+#version-history .versionnumber {
+    height: auto !important;
+    margin: 0 0 2px !important;
+    font: 600 14px/20px 'LatoSemibold', sans-serif !important;
+    letter-spacing: normal !important;
+}
+
+#version-history .vpublishdate {
+    height: auto !important;
+    font: 13px/18px 'LatoRegular', sans-serif !important;
+    letter-spacing: normal !important;
+}
+
+/* The page marks the open version with inline styles (dark blue background, white
+   text), so it is matched on that: the Analytics light-blue row with a blue edge. */
+#version-history .versionhistory[style*="34, 109, 180"] {
+    background-color: #eaf0fc !important;
+    box-shadow: inset 3px 0 0 #2c66dd;
+}
+
+#version-history .versionhistory[style*="34, 109, 180"] .versionnumber {
+    color: #2c66dd !important;
+}
+
+#version-history .versionhistory[style*="34, 109, 180"] .vpublishdate {
+    color: #555 !important;
+}
+
+#version-history #releasenotes {
+    flex: 1 1 auto;
+    width: auto !important;
+    height: auto !important;
+    min-width: 0;
+}
+
+#version-history .releasenotesbox {
+    height: auto !important;
+    padding: 12px 16px !important;
+}
+
+#version-history .releasenote {
+    margin: 0 0 6px !important;
+    font: 600 14px/20px 'LatoSemibold', sans-serif !important;
+    letter-spacing: normal !important;
+    color: #222 !important;
+}
+
+#version-history .releasenotemsg {
+    font: 14px/22px 'LatoRegular', sans-serif !important;
+    letter-spacing: normal !important;
+    color: #222 !important;
+    overflow-wrap: anywhere;
 }
