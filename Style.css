@@ -467,3 +467,292 @@ ul.extension-tab-section > li.main-selector > a {
 .details-conatiner {
     padding-bottom: 96px !important;
 }
+
+/* ===========================================================================
+   Install confirmation dialog
+   ---------------------------------------------------------------------------
+   The jQuery UI dialog Marketplace opens from Install ("Confirm Installation").
+   It is appended to <body>, outside .extension-details-page, so none of the
+   detail-page rules above reach it. Everything here is scoped to this one
+   dialog by its content id, so Marketplace's other dialogs are left alone.
+   =========================================================================== */
+
+/* Opened with an inline width:780px and left:0 - wider than the panel, so its
+   right edge, the Cancel button and the end of every sentence were cut off.
+   Pinned 16px in from both edges instead; jQuery keeps writing left/top inline,
+   hence !important. */
+.ui-dialog[aria-describedby="installAnalytics"] {
+    left: 16px !important;
+    right: 16px !important;
+    width: auto !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    border: 0 !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-titlebar {
+    padding: 16px 20px !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-title {
+    font-size: 16px !important;
+    line-height: 24px !important;
+    color: #222 !important;
+}
+
+/* The page caps this at an inline 611px, taller than the panel can show. */
+#installAnalytics {
+    max-height: calc(100vh - 200px) !important;
+    padding: 16px 20px !important;
+    box-sizing: border-box;
+}
+
+/* ---- Grey info boxes ---------------------------------------------------- */
+
+#installAnalytics .section-block {
+    margin-top: 12px !important;
+    padding: 16px !important;
+    border-radius: 8px;
+    background: #f7f9fc !important;
+}
+
+#installAnalytics .userPersonalDetails .section-block {
+    margin-top: 0 !important;
+}
+
+/* "Use of Personal Details" / "Installation details": inline 17px headings. */
+#installAnalytics .userPersonalDetails .section-block > div:first-child,
+#installAnalytics .action-details {
+    margin: 0 0 8px !important;
+    font-size: 16px !important;
+    font-weight: 600;
+    line-height: 24px;
+    color: #222;
+}
+
+/* "The following details will be shared..." left, "Edit Profile" right - two
+   floats that collide at this width. One row, wrapping cleanly when it must. */
+#user-of-details .editer-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px 12px;
+    margin: 0 0 8px !important;
+}
+
+#user-of-details .editer-section .content,
+#user-of-details .editer-section .editer-icon {
+    float: none !important;
+}
+
+#user-of-details .editer-section .editer-icon span {
+    color: #2c66dd !important;
+}
+
+/* Label / value tables. The two boxes sized their label column differently
+   (auto in one, 120px in the other) and the label line was 32px against the
+   value's 24px, so nothing lined up. One 120px column, one 24px line. */
+#installAnalytics .section-block table {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+#installAnalytics .section-block td {
+    padding: 4px 0 !important;
+    vertical-align: top;
+}
+
+#installAnalytics .section-block td:first-child {
+    width: 120px !important;
+    padding-right: 12px !important;
+}
+
+#installAnalytics .dialog-message,
+#installAnalytics .dialog-message:first-child {
+    margin: 0 !important;
+    font: 14px/24px 'LatoRegular', sans-serif !important;
+    color: #555;
+}
+
+#installAnalytics .section-block td:first-child .dialog-message {
+    color: #8a8a8a;
+}
+
+#installAnalytics .fieldAns,
+#installAnalytics .msg-title,
+#installAnalytics .msg-service,
+#installAnalytics .msg-app-type {
+    font: 14px/24px 'LatoRegular', sans-serif !important;
+    color: #222;
+    overflow-wrap: anywhere;
+}
+
+/* Portal picker. */
+#installAnalytics .section-block select {
+    width: 100%;
+    max-width: 260px;
+    height: 32px;
+    margin: 0 !important;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #222;
+}
+
+/* ---- Consent checkboxes ------------------------------------------------- */
+
+/* Each row is a custom checkbox (label.fcontainer, with an absolutely placed
+   .checkmark) followed by its text, nudged into place with inline top offsets.
+   Laid out as a row instead: box on the first text line, text wrapping beside
+   it. */
+#installAnalytics td.cnt-spliter {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 0 0 !important;
+    border: 0 !important;
+    text-align: left !important;
+}
+
+#installAnalytics .fcontainer {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 24px;
+    margin: 0 !important;
+    padding: 0 !important;
+    top: 0 !important;
+    font-size: 0;
+}
+
+/* The real input, kept clickable over the drawn box. */
+#installAnalytics .fcontainer input {
+    position: absolute;
+    top: 4px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    z-index: 1;
+}
+
+#installAnalytics .fcontainer .checkmark {
+    position: absolute;
+    top: 4px !important;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    box-sizing: border-box;
+    border: 1px solid #b0b0b0;
+    border-radius: 4px;
+    background: #fff;
+}
+
+#installAnalytics .fcontainer:hover input ~ .checkmark {
+    border-color: #2c66dd;
+}
+
+#installAnalytics .fcontainer input:checked ~ .checkmark {
+    border-color: #2c66dd;
+    background: #2c66dd;
+}
+
+/* Marketplace's tick is two rotated bars sized for its old box; one white tick
+   for the filled one. */
+#installAnalytics .fcontainer input:checked ~ .checkmark:before {
+    display: none !important;
+}
+
+#installAnalytics .fcontainer input:checked ~ .checkmark:after {
+    display: block;
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 8px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+#installAnalytics td.cnt-spliter > .dialog-message {
+    flex: 1 1 auto;
+    width: auto !important;
+    margin: 0 !important;
+    line-height: 24px !important;
+    color: #222;
+}
+
+/* The required-field asterisk: a 30px glyph hung 13px into the left margin.
+   Inline at text size instead, so it cannot collide with the checkbox. */
+#installAnalytics .mandatory-icon {
+    margin-left: 0 !important;
+    line-height: 24px !important;
+}
+
+#installAnalytics .mandatory-icon::before {
+    position: static !important;
+    margin-right: 2px;
+    font-size: 14px !important;
+    color: #e54946;
+}
+
+#installAnalytics a,
+#installAnalytics a.link-color {
+    color: #2c66dd !important;
+}
+
+#installAnalytics .installAnalytics-note {
+    display: block;
+    padding-top: 12px;
+    font-size: 14px !important;
+    line-height: 20px;
+}
+
+/* ---- Buttons ------------------------------------------------------------ */
+
+/* Install and Cancel side by side, filling the bar. Install is the page's first
+   button and carries .btn-hide (half opacity, no clicks) until both terms boxes
+   are ticked - that behaviour is the page's and is kept. */
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane {
+    margin: 0 !important;
+    padding: 12px 20px 16px !important;
+    border-top: 1px solid #e8e8e8 !important;
+    box-shadow: none !important;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonset {
+    float: none !important;
+    display: flex;
+    gap: 12px;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button {
+    flex: 1 1 0;
+    width: auto !important;
+    height: 32px !important;
+    margin: 0 !important;
+    padding: 8px 16px !important;
+    box-sizing: border-box;
+    border-radius: 8px !important;
+    font: 14px/16px 'LatoSemibold', sans-serif !important;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:first-child {
+    border: 0 !important;
+    background: #2c66dd !important;
+    color: #fff !important;
+}
+
+.ui-dialog[aria-describedby="installAnalytics"] .ui-dialog-buttonpane button:last-child {
+    border: 1px solid #d8d8d8 !important;
+    background: #fff !important;
+    color: #222 !important;
+}
